@@ -18,8 +18,8 @@ class QuickTransferTest extends BaseTest {
     @BeforeEach
     void login(TestInfo testInfo) {
         try {
-            SharedSteps.enterCredentials(getLoginPage(), TestUtils.generateRandomString(8), TestUtils.generateRandomString(8));
-            SharedSteps.submitLogin(getLoginPage());
+            SharedSteps.enterCredentials(loginPage, TestUtils.generateRandomString(8), TestUtils.generateRandomString(8));
+            SharedSteps.submitLogin(loginPage);
         } catch(Throwable t) {
             captureScreenshot(testInfo.getDisplayName());
             throw t;
