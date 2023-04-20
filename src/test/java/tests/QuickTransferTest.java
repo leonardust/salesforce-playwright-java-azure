@@ -30,7 +30,7 @@ class QuickTransferTest extends BaseTest {
     void quickTransferFundsPositive(TestInfo testInfo) {
         try {
             transferFunds("Jan Demobankowy", "100", "na waciki");
-            validateDialogConfirmationText("Przelew wyonany!  Odbiorca: Jan Demobankowy Kwota: 100,00PLN Nazwa: na waciki");
+            validateDialogConfirmationText("Przelew wykonany!  Odbiorca: Jan Demobankowy Kwota: 100,00PLN Nazwa: na waciki");
         } catch (Throwable t) {
             captureScreenshot(testInfo.getDisplayName());
             throw t;
