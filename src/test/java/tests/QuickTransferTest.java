@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Flaky;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ class QuickTransferTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test @Flaky
     void quickTransferFundsPositive(TestInfo testInfo) {
         try {
             transferFunds("Jan Demobankowy", "100", "na waciki");
