@@ -1,0 +1,114 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Playwright Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        type: choice
+        description: Select browser
+        default: chrome
+        options:
+          - chrome
+          - firefox
+          - webkit    
+      headless:
+        type: choice
+        description: Select headless
+        default: 'true'
+        options:
+          - 'true'
+          - 'false'   
+      tracing:
+        type: choice
+        description: Select tracing
+        default: 'false'
+        options:
+          - 'true'
+          - 'false'
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * *'
+    
+env:
+  BROWSER: ${{ github.event.inputs.browser || 'chrome' }}
+  HEADLESS: ${{ github.event.inputs.headless || 'true' }}    
+  TRACING: ${{ github.event.inputs.tracing || 'false' }}
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean install package --file pom.xml
+
+      - name: Run tests
+        run: mvn test -Dbrowser=${{github.event.inputs.browser || 'chrome'}} -Dheadless=${{github.event.inputs.headless || 'true'}} -Dtracing=${{github.event.inputs.tracing || 'false'}}
+
+      - name: Get Allure history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: target/allure-results
+          gh_pages: gh-pages
+          allure_report: target/allure-report
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
+
+      - name: Upload Allure artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: allure-report
+          path: target/allure-report/
+          retention-days: 30
+
+      - name: Write summary
+        if: always()
+        run: |
+          echo "- Browser: $BROWSER" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: $HEADLESS" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: $TRACING" >> $GITHUB_STEP_SUMMARY
+
+    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+#     - name: Update dependency graph
+#       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
