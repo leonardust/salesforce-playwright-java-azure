@@ -61,11 +61,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
-        run: mvn clean install package --file pom.xml
-
       - name: Run tests
-        run: mvn test -Dbrowser=${{github.event.inputs.browser || 'chrome'}} -Dheadless=${{github.event.inputs.headless || 'true'}} -Dtracing=${{github.event.inputs.tracing || 'false'}}
+        run: mvn clean test -Dbrowser=${{github.event.inputs.browser || 'chrome'}} -Dheadless=${{github.event.inputs.headless || 'true'}} -Dtracing=${{github.event.inputs.tracing || 'false'}}
 
       - name: Get Allure history
         uses: actions/checkout@v3
