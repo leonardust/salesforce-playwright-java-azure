@@ -21,12 +21,12 @@ steps:
       cacheHitVar: 'MavenCacheHit'
     continueOnError: true
 
-  - task: UseJavaVersion@1
+  - task: JavaToolInstaller@0
     displayName: Set up JDK 11
     inputs:
       versionSpec: '11'
       architecture: 'x64'
-      jdkSourceOption: 'PreInstalled'
+      jdkSourceOption: 'PreInstalledJdk'
 
   - task: Maven@3
     displayName: Run tests
