@@ -105,7 +105,7 @@ jobs:
           echo "browser: $BROWSER" >> $GITHUB_STEP_SUMMARY
           echo "headless: $HEADLESS" >> $GITHUB_STEP_SUMMARY
           echo "tracing: $TRACING" >> $GITHUB_STEP_SUMMARY
-          echo "[![View run in Allure Report]](https://leonardust.github.io/playwright-java-new)" >> $GITHUB_STEP_SUMMARY
+          echo "[View run in Allure Report](https://leonardust.github.io/playwright-java-new)" >> $GITHUB_STEP_SUMMARY
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 
