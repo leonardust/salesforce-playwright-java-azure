@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/lukkomorowski/playwright-java-new/_apis/build/status%2Fleonardust.playwright-java-new?branchName=main)](https://dev.azure.com/lukkomorowski/playwright-java-new/_build/latest?definitionId=8&branchName=main)
+
 If setting results directory in allure plugin doesn't work
 
 ```xml
@@ -10,18 +12,20 @@ If setting results directory in allure plugin doesn't work
         <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
     </configuration>
 </plugin>
+
 ```
 
-create ```allure.properties``` with
+create `allure.properties` with
 
 ```properties
 allure.results.directory=target/allure-results
+
 ```
 
 **File encoding**
 
 To avoid Maven build message
-```[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!```
+`[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!`
 
 add to POM.xml
 
@@ -31,4 +35,5 @@ add to POM.xml
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 </properties>
+
 ```
