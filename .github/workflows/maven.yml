@@ -101,11 +101,11 @@ jobs:
       - name: Write summary
         if: always()
         run: |
-          echo "[![Build Status](https://dev.azure.com/lukkomorowski/playwright-java-new/_apis/build/status%2Fleonardust.playwright-java-new?branchName=main)](https://dev.azure.com/lukkomorowski/playwright-java-new/_build/latest?definitionId=8&branchName=main)" >> $GITHUB_STEP_SUMMARY
-          echo "- Browser: $BROWSER" >> $GITHUB_STEP_SUMMARY
-          echo "- Mode: $HEADLESS" >> $GITHUB_STEP_SUMMARY
-          echo "- Mode: $TRACING" >> $GITHUB_STEP_SUMMARY
-          echo "[View run in Cucumber Report](https://leonardust.github.io/todomvc-cypress-cucumber/)" >> $GITHUB_STEP_SUMMARY
+          echo "[![View run in Azure Devops](https://dev.azure.com/lukkomorowski/playwright-java-new/_apis/build/status%2Fleonardust.playwright-java-new?branchName=main)](https://dev.azure.com/lukkomorowski/playwright-java-new/_build/latest?definitionId=8&branchName=main)" >> $GITHUB_STEP_SUMMARY
+          echo "Browser: $BROWSER" >> $GITHUB_STEP_SUMMARY
+          echo "Headless: $HEADLESS" >> $GITHUB_STEP_SUMMARY
+          echo "Tracing: $TRACING" >> $GITHUB_STEP_SUMMARY
+          echo "[!View run in Allure Report](https://leonardust.github.io/playwright-java-new)" >> $GITHUB_STEP_SUMMARY
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 
