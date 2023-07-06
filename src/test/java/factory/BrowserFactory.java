@@ -15,10 +15,11 @@ public class BrowserFactory {
         Playwright playwright = Playwright.create();
         log.info("Create playwright instance");
 
-        String browserType = System.getProperty("browser") != null ? System.getProperty("browser") : EnvironmentReaderService.getProperty("browser");
-        boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless") != null ? System.getProperty("headless") : EnvironmentReaderService.getProperty("browser.mode"));
+        String browserName = System.getProperty("browser") != null ? System.getProperty("browser") : EnvironmentReaderService.getProperty("browser");
+        boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless") != null ? System.getProperty("headless") :
+            EnvironmentReaderService.getProperty("headless"));
 
-        switch (browserType) {
+        switch (browserName) {
             case "chrome":
                 browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless));
                 log.info("Browser: " + browser.browserType().name() + "\nVersion: " + browser.version() + "\nHeadless: " + isHeadless);

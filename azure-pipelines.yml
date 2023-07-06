@@ -4,43 +4,69 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  browser: ${{ variables['inputs.browser'] }}
-  headless: ${{ variables['inputs.headless'] }}
-  tracing: ${{ variables['inputs.tracing'] }}
+parameters:
+  - name: browserSelection
+    type: string
+    default: 'chrome'
+    values:
+      - chrome
+      - firefox
+      - webkit
+
+  - name: headless
+    type: string
+    default: 'true'
+    values:
+      - true
+      - false
+
+  - name: tracing
+    type: string
+    default: 'false'
+    values:
+      - true
+      - false
+
+schedules:
+  - cron: '0 0 * * *'
+    displayName: Daily midnight build
+    branches:
+      include:
+        - main
 
 steps:
-  - checkout: self
-
-  - task: Cache@2
-    displayName: Cache Maven dependencies
+  - task: MavenAuthenticate@0
     inputs:
-      key: 'maven | "$(Agent.OS)" | **/pom.xml'
-      restoreKeys: 'maven | "$(Agent.OS)" |'
-      path: '$(Agent.HomeDirectory)/.m2/repository'
-      cacheHitVar: 'MavenCacheHit'
-    continueOnError: true
+      artifactsFeeds: 'mavenFeed'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-  - task: JavaToolInstaller@0
-    displayName: Set up JDK 11
-    inputs:
-      versionSpec: '11'
-      architecture: 'x64'
-      jdkSourceOption: 'PreInstalledJdk'
+  - script: |
+      echo 'Browser '${{ parameters.browserSelection }}  
+      echo 'Headless '${{ parameters.headless }}
+      echo 'Tracing '${{ parameters.tracing }}  
 
   - task: Maven@3
-    displayName: Run tests
     inputs:
       mavenPomFile: 'pom.xml'
-      options: '-Dbrowser=$(browser) -Dheadless=$(headless) -Dtracing=$(tracing)'
+      options: '-Dbrowser=${{ parameters.browserSelection }}  -Dheadless=${{ parameters.headless }} -Dtracing=${{ parameters.tracing }}'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '11'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
 
   - task: PublishTestResults@2
-    displayName: Publish test results
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      searchFolder: '$(System.DefaultWorkingDirectory)'
+      testRunTitle: 'JUnit tests'
+      failTaskOnFailedTests: true
+
+  - task: MavenAuthenticate@0
+    inputs:
+      artifactsFeeds: 'mavenFeed'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: 'drop'
+      pathtoPublish: '$(System.DefaultWorkingDirectory)/target/surefire-reports'
