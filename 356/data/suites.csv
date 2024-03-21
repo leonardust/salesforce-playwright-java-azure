@@ -1,0 +1,4 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Mar 21 00:28:23 GMT 2024","Thu Mar 21 00:28:23 GMT 2024","848","","tests.DemoBankLoginTest","","tests.DemoBankLoginTest","loginTestPositive","loginTestPositive(TestInfo)",""
+"passed","Thu Mar 21 00:28:22 GMT 2024","Thu Mar 21 00:28:22 GMT 2024","508","","tests.DemoBankLoginTest","","tests.DemoBankLoginTest","loginTestNegative","loginTestNegative(TestInfo)",""
+"passed","Thu Mar 21 00:28:22 GMT 2024","Thu Mar 21 00:28:23 GMT 2024","1220","","tests.QuickTransferTest","","tests.QuickTransferTest","quickTransferFundsPositive","quickTransferFundsPositive(TestInfo)",""
